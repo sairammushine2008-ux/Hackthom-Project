@@ -1,13 +1,12 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Navbar } from '../components/Navbar';
-import { Toast } from '../components/Toast';
+import { Layout } from '../components/layout/Layout';
 import { LoginPage } from '../pages/LoginPage';
 import { RegisterPage } from '../pages/RegisterPage';
-import { DashboardPage } from '../pages/DashboardPage';
+import { Dashboard } from '../pages/Dashboard';
 import { ProjectsPage } from '../pages/ProjectsPage';
-import { ProjectWorkspacePage } from '../pages/ProjectWorkspacePage';
+import { ProjectWorkspace } from '../pages/ProjectWorkspace';
 import { MyTasksPage } from '../pages/MyTasksPage';
 import { Sparkles } from 'lucide-react';
 
@@ -16,7 +15,7 @@ function ProtectedRoute({ children }) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-950 text-indigo-400">
+      <div className="min-h-screen flex items-center justify-center bg-slate-950 text-blue-500">
         <Sparkles className="w-8 h-8 animate-spin" />
       </div>
     );
@@ -26,15 +25,7 @@ function ProtectedRoute({ children }) {
     return <Navigate to="/login" replace />;
   }
 
-  return (
-    <div className="min-h-screen flex flex-col bg-slate-950">
-      <Navbar />
-      <main className="flex-1">
-        {children}
-      </main>
-      <Toast />
-    </div>
-  );
+  return <Layout>{children}</Layout>;
 }
 
 function PublicRoute({ children }) {
@@ -42,14 +33,14 @@ function PublicRoute({ children }) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-950 text-indigo-400">
+      <div className="min-h-screen flex items-center justify-center bg-slate-950 text-blue-500">
         <Sparkles className="w-8 h-8 animate-spin" />
       </div>
     );
   }
 
   if (isAuthenticated) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return children;
@@ -75,11 +66,20 @@ export function AppRoutes() {
         }
       />
 
+      {/* Main Collateral App Layout Routes */}
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
       <Route
         path="/dashboard"
         element={
           <ProtectedRoute>
-            <DashboardPage />
+            <Dashboard />
           </ProtectedRoute>
         }
       />
@@ -95,7 +95,15 @@ export function AppRoutes() {
         path="/projects/:id"
         element={
           <ProtectedRoute>
-            <ProjectWorkspacePage />
+            <ProjectWorkspace />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/tasks"
+        element={
+          <ProtectedRoute>
+            <MyTasksPage />
           </ProtectedRoute>
         }
       />
@@ -108,8 +116,7 @@ export function AppRoutes() {
         }
       />
 
-      <Route path="/" element={<Navigate to="/dashboard" replace />} />
-      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
