@@ -58,7 +58,22 @@ import {
   createCommentSchema
 } from '../schemas/index.js';
 
+import { runSeeds } from '../db/seed.js';
+import { runMigrations } from '../db/migrate.js';
+
 const router = express.Router();
+
+// --- Database Seeding Trigger (allows manual or automated initial demo bootstrapping) ---
+router.all('/seed', async (req, res) => {
+  try {
+    await runMigrations().catch(e => console.warn('[Seed Route] Migrations note:', e.message));
+    await runSeeds();
+    res.json({ message: 'Database schema and demo personas initialized successfully.' });
+  } catch (err) {
+    console.error('[Seed Route Error]', err);
+    res.status(500).json({ error: 'Failed to seed database: ' + err.message });
+  }
+});
 
 // --- Authentication ---
 router.post('/auth/register', validateBody(registerSchema), register);

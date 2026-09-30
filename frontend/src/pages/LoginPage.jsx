@@ -184,7 +184,25 @@ export function LoginPage() {
           {/* Optional Collapsible Credentials Form */}
           {showManualForm && (
             <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-3 animate-in fade-in duration-150 max-w-lg">
-              <div className="text-xs font-bold text-white uppercase tracking-wider">Sign In With Email</div>
+              <div className="flex items-center justify-between">
+                <div className="text-xs font-bold text-white uppercase tracking-wider">Sign In With Email</div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEmail('manager@launchops.ai');
+                    setPassword('Password123!');
+                  }}
+                  className="text-[11px] text-indigo-400 hover:text-indigo-300 font-semibold cursor-pointer"
+                >
+                  Fill Demo Credentials
+                </button>
+              </div>
+
+              <div className="p-2 rounded-lg bg-indigo-950/40 border border-indigo-800/40 text-[11px] text-indigo-300 flex items-center justify-between">
+                <span>Demo Password: <strong className="font-mono text-white">Password123!</strong></span>
+                <span className="text-slate-400">All 4 personas</span>
+              </div>
+
               {error && (
                 <div className="p-2.5 rounded-lg bg-rose-950/60 border border-rose-800 text-xs text-rose-300">
                   {error}
@@ -221,6 +239,17 @@ export function LoginPage() {
                   {loading ? 'Authenticating...' : 'Sign In'}
                 </button>
               </form>
+
+              <div className="pt-1 text-center text-xs text-slate-400">
+                Don't have an account?{' '}
+                <button
+                  type="button"
+                  onClick={() => navigate('/register')}
+                  className="text-indigo-400 font-semibold hover:underline cursor-pointer"
+                >
+                  Register here →
+                </button>
+              </div>
             </div>
           )}
         </div>

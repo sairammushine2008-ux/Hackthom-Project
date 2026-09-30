@@ -2,6 +2,8 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 import db from '../db/index.js';
+import { runSeeds } from '../db/seed.js';
+import { runMigrations } from '../db/migrate.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'launchops-dev-secret-key-super-secure-token-2025';
 
@@ -57,21 +59,49 @@ export async function register(req, res) {
     console.error('[Register Error]', err);
     res.status(500).json({ error: 'Failed to register account: ' + err.message });
   }
-}
-
+ 
 export async function login(req, res) {
   try {
     const { email, password } = req.validatedBody;
 
-    const userRes = await db.query('SELECT * FROM users WHERE email = $1', [email]);
-    if (userRes.rows.length === 0) {
-      return res.status(401).json({ error: 'Invalid email or password.' });
+    let userRes;
+    try {
+      userRes = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+    } catch (queryErr) {
+      console.warn('[Login] DB query failed, attempting auto-migration & seed:', queryErr.message);
+      try {
+        await runMigrations().catch(() => {});
+        await runSeeds();
+        userRes = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+      } catch (recoveryErr) {
+        console.error('[Login] Recovery failed:', recoveryErr.message);
+        return res.status(500).json({ error: 'Database unavailable: ' + queryErr.message });
+      }
+    }
+
+    // If user is not found, check if database needs initial seeding for demo personas
+    if (!userRes || userRes.rows.length === 0) {
+      const knownPersonas = ['manager@launchops.ai', 'it@launchops.ai', 'finance@launchops.ai', 'sales@launchops.ai', 'admin@launchops.ai'];
+      if (knownPersonas.includes(email.toLowerCase())) {
+        console.log(`[Login] Persona ${email} missing. Attempting auto-seed...`);
+        try {
+          await runMigrations().catch(() => {});
+          await runSeeds();
+          userRes = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+        } catch (seedErr) {
+          console.warn('[Login] Auto-seed failed:', seedErr.message);
+        }
+      }
+    }
+
+    if (!userRes || userRes.rows.length === 0) {
+      return res.status(401).json({ error: 'Invalid email or password. For demo personas, use password: Password123!' });
     }
 
     const user = userRes.rows[0];
     const validPassword = await bcrypt.compare(password, user.password_hash);
     if (!validPassword) {
-      return res.status(401).json({ error: 'Invalid email or password.' });
+      return res.status(401).json({ error: 'Invalid email or password. For demo personas, use password: Password123!' });
     }
 
     const token = jwt.sign(
