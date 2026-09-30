@@ -4,7 +4,7 @@ import { aiPlanSchema } from '../schemas/index.js';
 dotenv.config();
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
+const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-3.8-flash';
 
 /**
  * Validates that all source citations point to genuine documents in the project
