@@ -15,7 +15,10 @@ import {
   Clock,
   ChevronRight,
   Layers,
-  Bot
+  Bot,
+  BookOpen,
+  X,
+  ExternalLink
 } from 'lucide-react';
 
 const QUICK_PERSONAS = [
@@ -33,6 +36,7 @@ export function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showManualForm, setShowManualForm] = useState(false);
+  const [showDocsModal, setShowDocsModal] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -74,16 +78,23 @@ export function LoginPage() {
             <Rocket className="w-5 h-5 text-white" />
           </div>
           <span className="text-lg font-bold tracking-tight text-white flex items-center gap-1.5">
-            LaunchOps <span className="text-indigo-400">AI</span>
+            OpsPulse <span className="text-indigo-400">AI</span>
           </span>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setShowDocsModal(true)}
+            className="flex items-center gap-1.5 text-xs font-semibold px-3.5 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-slate-800 transition-colors cursor-pointer"
+          >
+            <BookOpen className="w-3.5 h-3.5 text-indigo-400" />
+            <span>Docs</span>
+          </button>
           <button
             onClick={() => handleQuickLogin('manager@launchops.ai')}
-            className="hidden sm:flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white shadow-md shadow-indigo-600/30 transition-all cursor-pointer"
+            className="flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white shadow-md shadow-indigo-600/30 transition-all cursor-pointer"
           >
-            <span>Live Demo</span>
+            <span>Launch Cockpit</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -91,24 +102,27 @@ export function LoginPage() {
 
       {/* Main Split-Hero Section */}
       <main className="max-w-7xl mx-auto w-full px-6 py-8 lg:py-16 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center z-10 flex-1">
-        {/* Left Column: The Hook, Pitch, and Actions */}
+        {/* Left Column: The Exact Anatomy from Mentor */}
         <div className="lg:col-span-6 space-y-6">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-semibold tracking-wide">
             <Sparkles className="w-3.5 h-3.5" />
-            ENTERPRISE ONBOARDING INTELLIGENCE
+            ENTERPRISE OPERATIONS INTELLIGENCE
           </div>
 
+          {/* The Hook (H1 Headline) */}
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
-            The Autonomous Brain for Your Customer Onboarding & Operations.
+            The Autonomous Brain for Your Enterprise Operations.
           </h1>
 
-          <p className="text-sm sm:text-base text-slate-400 leading-relaxed max-w-xl">
-            Eliminate fragmented kickoff notes, missing billing info, and stalled security sign-offs. LaunchOps AI turns unstructured sales handoffs into auditable, traceable action plans with automated blocker release.
+          {/* The Pitch (H2 Subheadline) */}
+          <p className="text-sm sm:text-base text-slate-300 leading-relaxed max-w-xl">
+            Eliminate data silos and endless email chains. OpsPulse AI instantly analyzes cross-department workflows, flags compliance risks, and automates approvals so your team can move faster.
           </p>
 
-          {/* Primary Action Button and Secondary Action */}
+          {/* The Action (Primary CTA & Ghost Secondary CTA) */}
           <div className="space-y-3 pt-2">
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              {/* Primary CTA */}
               <button
                 onClick={() => handleQuickLogin('manager@launchops.ai')}
                 disabled={loading}
@@ -118,37 +132,35 @@ export function LoginPage() {
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
 
+              {/* Secondary CTA (Ghost Button) */}
               <button
-                onClick={() => setShowManualForm(!showManualForm)}
-                className="flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:text-white bg-slate-900/80 hover:bg-slate-900 border border-slate-800 transition-colors cursor-pointer"
+                onClick={() => setShowDocsModal(true)}
+                className="flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:text-white bg-transparent hover:bg-slate-900 border border-slate-700/80 transition-colors cursor-pointer"
               >
-                {showManualForm ? 'Hide Sign In Form' : 'Sign In With Credentials'}
+                <BookOpen className="w-4 h-4 text-indigo-400" />
+                <span>Read the Documentation</span>
               </button>
             </div>
 
-            {/* Micro-copy Proof */}
-            <div className="flex items-center gap-4 text-[11px] text-slate-500">
-              <span className="flex items-center gap-1">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                No setup required
-              </span>
-              <span>•</span>
-              <span className="flex items-center gap-1">
-                <CheckCircle2 className="w-3.5 h-3.5 text-indigo-400" />
-                Grounded Google Gemini citations
-              </span>
-              <span>•</span>
-              <span className="flex items-center gap-1">
-                <CheckCircle2 className="w-3.5 h-3.5 text-purple-400" />
-                Role-based access
-              </span>
+            {/* The Proof (Micro-copy) */}
+            <div className="flex items-center gap-2 text-xs text-slate-400 pt-1">
+              <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+              <span className="font-medium text-slate-300">Secure, role-based, and built for enterprise scale.</span>
             </div>
           </div>
 
-          {/* 1-Click Demo Personas */}
+          {/* Role-Based 1-Click Access Cards */}
           <div className="pt-4 border-t border-slate-800/80">
-            <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
-              <span>Select Persona to Test Specific Role Permissions:</span>
+            <div className="flex items-center justify-between mb-2.5">
+              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                1-Click Role Personas (Instant Access):
+              </span>
+              <button
+                onClick={() => setShowManualForm(!showManualForm)}
+                className="text-xs text-indigo-400 hover:underline cursor-pointer"
+              >
+                {showManualForm ? 'Hide Password Box' : 'Or type credentials →'}
+              </button>
             </div>
             <div className="grid grid-cols-2 gap-2 max-w-lg">
               {QUICK_PERSONAS.map((p) => (
@@ -169,16 +181,16 @@ export function LoginPage() {
             </div>
           </div>
 
-          {/* Collapsible Manual Login Form */}
+          {/* Optional Collapsible Credentials Form */}
           {showManualForm && (
-            <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-3 animate-in fade-in duration-150 max-w-lg">
-              <div className="text-xs font-bold text-white uppercase tracking-wider">Account Credentials</div>
+            <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-3 animate-in fade-in duration-150 max-w-lg">
+              <div className="text-xs font-bold text-white uppercase tracking-wider">Sign In With Email</div>
               {error && (
                 <div className="p-2.5 rounded-lg bg-rose-950/60 border border-rose-800 text-xs text-rose-300">
                   {error}
                 </div>
               )}
-              <form onSubmit={handleSubmit} className="space-y-3">
+              <form onSubmit={handleSubmit} className="space-y-2.5">
                 <div className="relative">
                   <Mail className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
                   <input
@@ -213,7 +225,7 @@ export function LoginPage() {
           )}
         </div>
 
-        {/* Right Column: Live Interactive Product Mockup & Proof */}
+        {/* Right Column: Mentor UI Tip — High-Quality Live Interface View */}
         <div className="lg:col-span-6 relative">
           <div className="relative rounded-2xl glass-card border border-slate-700/80 shadow-2xl p-6 overflow-hidden space-y-4 glow-indigo">
             {/* Window Topbar */}
@@ -222,17 +234,17 @@ export function LoginPage() {
                 <span className="w-3 h-3 rounded-full bg-rose-500/80"></span>
                 <span className="w-3 h-3 rounded-full bg-amber-500/80"></span>
                 <span className="w-3 h-3 rounded-full bg-emerald-500/80"></span>
-                <span className="ml-2 text-xs font-bold text-slate-300">Acme Logistics — Live Onboarding Workspace</span>
+                <span className="ml-2 text-xs font-bold text-slate-200">OpsPulse Operations Cockpit — Acme Logistics</span>
               </div>
               <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-800 animate-pulse font-semibold">
-                ● Status: Blocked
+                ● At Risk: Blocked
               </span>
             </div>
 
             {/* Target Date and Customer Badge */}
             <div className="flex items-center justify-between text-xs text-slate-400">
-              <span>Target Launch: <strong className="text-white">Nov 15, 2026 (500 Enterprise Seats)</strong></span>
-              <span className="text-indigo-400 font-semibold">Manager: Sarah Connor</span>
+              <span>Customer: <strong className="text-white">Acme Logistics (500 Seats)</strong></span>
+              <span className="text-indigo-400 font-semibold">Launch Target: Nov 15, 2026</span>
             </div>
 
             {/* Live Task Board Snippet */}
@@ -246,10 +258,10 @@ export function LoginPage() {
                     </span>
                     <span className="text-xs font-bold text-white">Complete Security & Compliance Review</span>
                   </div>
-                  <div className="text-[11px] text-slate-400">Owner: David Kim • Due: Oct 15</div>
+                  <div className="text-[11px] text-slate-400">Owner: David Kim • Status: In Progress</div>
                 </div>
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/30">
-                  In Progress
+                  Prerequisite
                 </span>
               </div>
 
@@ -268,7 +280,7 @@ export function LoginPage() {
                 </div>
                 <div className="text-[11px] text-rose-300/90 flex items-center gap-1.5 font-medium">
                   <AlertTriangle className="w-3.5 h-3.5 text-rose-400 shrink-0" />
-                  <span>Waiting on prerequisite: "Complete Security & Compliance Review"</span>
+                  <span>Waiting on prerequisite: "Complete Security Review"</span>
                 </div>
               </div>
 
@@ -279,9 +291,9 @@ export function LoginPage() {
                     <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
                       Finance
                     </span>
-                    <span className="text-xs font-bold text-white">Collect Customer Billing Contact & PO</span>
+                    <span className="text-xs font-bold text-white">Collect Billing Contact & PO Number</span>
                   </div>
-                  <div className="text-[11px] text-slate-400">Missing customer invoicing email</div>
+                  <div className="text-[11px] text-slate-400">Flagged missing from kickoff notes</div>
                 </div>
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/30">
                   In Progress
@@ -305,21 +317,90 @@ export function LoginPage() {
 
             {/* Bottom Demo Launcher Strip */}
             <div className="pt-2 flex items-center justify-between text-xs text-slate-400 border-t border-slate-800/80">
-              <span>Interactive pre-seeded dataset</span>
+              <span className="text-[11px]">Real-time dependency engine active</span>
               <button
                 onClick={() => handleQuickLogin('manager@launchops.ai')}
-                className="text-indigo-400 font-bold hover:underline flex items-center gap-1 cursor-pointer"
+                className="text-indigo-400 font-bold hover:underline flex items-center gap-1 cursor-pointer text-xs"
               >
-                Click to explore full workspace →
+                Launch Cockpit to Unblock →
               </button>
             </div>
           </div>
         </div>
       </main>
 
+      {/* In-App Documentation Modal (for "Read the Documentation" Ghost CTA) */}
+      {showDocsModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-150">
+          <div className="relative w-full max-w-2xl rounded-2xl bg-slate-900 border border-slate-700 shadow-2xl p-6 max-h-[85vh] overflow-y-auto space-y-5">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+              <div className="flex items-center gap-2 text-indigo-400">
+                <BookOpen className="w-5 h-5" />
+                <h3 className="text-base font-bold text-white">OpsPulse AI — Architecture & Guide</h3>
+              </div>
+              <button
+                onClick={() => setShowDocsModal(false)}
+                className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-4 text-xs text-slate-300 leading-relaxed">
+              <div>
+                <h4 className="font-bold text-white text-sm mb-1">Overview & Business Problem</h4>
+                <p>
+                  Customer onboarding coordination across Sales, Customer Success, Finance, and IT is currently broken by scattered information across emails and spreadsheets. OpsPulse AI converts fragmented customer handoff notes into structured, traceable action plans with automated dependency resolution.
+                </p>
+              </div>
+
+              <div>
+                <h4 className="font-bold text-white text-sm mb-1">Architecture & Tech Stack</h4>
+                <ul className="list-disc pl-5 space-y-1 text-slate-400">
+                  <li><strong>Frontend:</strong> React 19, Vite, React Router, Tailwind CSS</li>
+                  <li><strong>Backend:</strong> Node.js, Express, JWT Authentication, bcrypt password hashing</li>
+                  <li><strong>Database:</strong> PostgreSQL via <code className="text-indigo-300">pg</code> (Supabase compatible)</li>
+                  <li><strong>AI Engine:</strong> Google Gemini API called exclusively from Express backend with Zod schema verification</li>
+                  <li><strong>Workflow Automation:</strong> Instant dependency release when prerequisite tasks complete</li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="font-bold text-white text-sm mb-1">3-Minute Demo Journey (Acme Logistics)</h4>
+                <ol className="list-decimal pl-5 space-y-1 text-slate-400">
+                  <li>Log in as Manager Sarah Connor using 1-Click Launch</li>
+                  <li>Open Acme Logistics and inspect source handoff notes</li>
+                  <li>Review AI-generated requirements and paragraph citations</li>
+                  <li>Mark Security Review as 'Completed' to observe Okta SSO auto-unblock!</li>
+                  <li>Ask AI Copilot: <em>"What is preventing Acme from launching?"</em></li>
+                </ol>
+              </div>
+
+              <div className="pt-2 flex justify-end gap-3">
+                <button
+                  onClick={() => setShowDocsModal(false)}
+                  className="px-4 py-2 rounded-xl bg-slate-800 text-white font-semibold hover:bg-slate-700 transition-colors cursor-pointer"
+                >
+                  Close Guide
+                </button>
+                <button
+                  onClick={() => {
+                    setShowDocsModal(false);
+                    handleQuickLogin('manager@launchops.ai');
+                  }}
+                  className="px-4 py-2 rounded-xl bg-indigo-600 text-white font-semibold hover:bg-indigo-500 transition-colors cursor-pointer"
+                >
+                  Launch Operations Cockpit
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Footer */}
       <footer className="max-w-7xl mx-auto w-full px-6 py-4 text-center text-xs text-slate-500 z-10 border-t border-slate-900">
-        LaunchOps AI — Built for enterprise customer onboarding handoffs and automated dependency resolution.
+        OpsPulse AI — Built for enterprise operations, cross-department workflows, and automated blocker resolution.
       </footer>
     </div>
   );
