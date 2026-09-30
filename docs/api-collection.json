@@ -1,0 +1,141 @@
+{
+  "info": {
+    "name": "LaunchOps AI API Collection",
+    "_postman_id": "c61f791c-launchops-ai-api",
+    "description": "Comprehensive Postman/Bruno API Collection for LaunchOps AI Backend API.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000/api" },
+    { "key": "token", "value": "" },
+    { "key": "projectId", "value": "proj-acme-01" },
+    { "key": "taskId", "value": "tsk-sec-01" }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "http://localhost:5000/health" }
+      }
+    },
+    {
+      "name": "Auth - Login as Manager",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"manager@launchops.ai\",\n  \"password\": \"Password123!\"\n}"
+        },
+        "url": { "raw": "{{baseUrl}}/auth/login" }
+      }
+    },
+    {
+      "name": "Auth - Register New User",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane.doe@example.com\",\n  \"password\": \"SecurePass123!\",\n  \"role\": \"Member\",\n  \"department\": \"IT\",\n  \"organizationName\": \"Acme Enterprise Hub\"\n}"
+        },
+        "url": { "raw": "{{baseUrl}}/auth/register" }
+      }
+    },
+    {
+      "name": "Dashboard - Get Operational Metrics",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": { "raw": "{{baseUrl}}/dashboard/metrics" }
+      }
+    },
+    {
+      "name": "Projects - Get All Projects",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": { "raw": "{{baseUrl}}/projects" }
+      }
+    },
+    {
+      "name": "Projects - Get Project By ID",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": { "raw": "{{baseUrl}}/projects/{{projectId}}" }
+      }
+    },
+    {
+      "name": "Sources - Get Handoff Documents",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": { "raw": "{{baseUrl}}/projects/{{projectId}}/sources" }
+      }
+    },
+    {
+      "name": "Sources - Upload / Paste Source Notes",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Kickoff Notes Addendum\",\n  \"content\": \"Paragraph 1: Security review completed by infosec on Friday. Production API keys may be generated.\"\n}"
+        },
+        "url": { "raw": "{{baseUrl}}/projects/{{projectId}}/sources" }
+      }
+    },
+    {
+      "name": "AI - Generate Onboarding Plan",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": { "raw": "{{baseUrl}}/projects/{{projectId}}/ai/generate-plan" }
+      }
+    },
+    {
+      "name": "AI - Explain Blockers Query",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"question\": \"What is preventing Acme from launching?\"\n}"
+        },
+        "url": { "raw": "{{baseUrl}}/projects/{{projectId}}/ai/explain-blockers" }
+      }
+    },
+    {
+      "name": "Tasks - Update Task Status (Triggers Automation)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"Completed\"\n}"
+        },
+        "url": { "raw": "{{baseUrl}}/tasks/{{taskId}}" }
+      }
+    },
+    {
+      "name": "Notifications - Get In-App Notifications",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": { "raw": "{{baseUrl}}/notifications" }
+      }
+    }
+  ]
+}
